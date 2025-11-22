@@ -32,6 +32,22 @@ mmap은 가상주소일부분과 물리메모리의 페이지를 매핑한다. �
 중요한 점은 mmap으로 매핑된 가상주소에 write를 한다고 해서, 즉시 파일에 반영되는 것은 아니라는 것이다. write를 하는건 물리메모리의 페이지에 write하는 것이다. 이후 커널이 적절한 시간에 물리메모리 페이지와 디스크의 파일을 동기화한다.(즉시 동기화 하고 싶다면 msync() 사용)
 
 ---
+## 🧾 명령어 요약
+
+| Command   | From      | 설명                                      |
+|----------|-----------|-------------------------------------------|
+| `W`      | `ssd`     | 지정 LBA에 32비트 hex 값 쓰기            |
+| `R`      | `ssd`     | 지정 LBA를 읽어 result.txt에 기록        |
+| `write`  | testShell | LBA에 값 기록 (내부적으로 `./ssd W` 호출) |
+| `read`   | testShell | LBA 값을 읽어 출력 (`./ssd R` + result.txt) |
+| `fullwrite` | testShell | 전체 LBA에 랜덤 값 기록                |
+| `fullread`  | testShell | 전체 LBA 읽어 출력                     |
+| `testapp1`  | testShell | 전체 LBA 랜덤 값 검증 테스트          |
+| `testapp2`  | testShell | 일부 LBA 덮어쓰기 검증 테스트         |
+| `help`      | testShell | 명령어 목록 출력                      |
+| `exit`      | testShell | 셸 종료                               |
+
+---
 
 ## ⚙️ SSD Simulator (`ssd`)
 
@@ -163,4 +179,3 @@ mmap은 가상주소일부분과 물리메모리의 페이지를 매핑한다. �
 </p>
 ---
 
-"# SSD-" 
