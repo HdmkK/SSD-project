@@ -1,18 +1,20 @@
 # 🧠 SSD Simulator & Test Shell
 
-## 📦 개요
+## 1. 개요
 이 프로젝트는 간단한 NAND 플래시 시뮬레이터(`ssd`)와 이를 제어하는 셸 프로그램(`testShell`)로 구성되어 있습니다.  
 `ssd`는 `nand.txt` 파일을 메모리 매핑하여 논리 블록(LBA) 단위로 데이터를 읽고 쓰며,  
 `testShell`은 이를 명령어 기반으로 제어할 수 있도록 제공합니다.
 
-
-## 구조도
+<br>
+---
+## 2. 구조도
 <p align="center">
   <img src="./SSD프로젝트/images/구조도.png" alt="구조도 이미지" width="500">
 </p>
 
-
-## 차별점
+<br>
+---
+## 3. 차별점
 
 nand.txt 접근 시, mmap으로 파일을 특정 가상주소공간에 매핑하여 nand에 read/write하는 것을 가상으로 구현
 
@@ -31,8 +33,9 @@ mmap은 가상주소일부분과 물리메모리의 페이지를 매핑한다. �
 
 중요한 점은 mmap으로 매핑된 가상주소에 write를 한다고 해서, 즉시 파일에 반영되는 것은 아니라는 것이다. write를 하는건 물리메모리의 페이지에 write하는 것이다. 이후 커널이 적절한 시간에 물리메모리 페이지와 디스크의 파일을 동기화한다.(즉시 동기화 하고 싶다면 msync() 사용)
 
+<br>
 ---
-## 🧾 명령어 요약
+## 4. 🧾 명령어 요약
 
 | Command   | From      | 설명                                      |
 |----------|-----------|-------------------------------------------|
@@ -47,9 +50,9 @@ mmap은 가상주소일부분과 물리메모리의 페이지를 매핑한다. �
 | `help`      | testShell | 명령어 목록 출력                      |
 | `exit`      | testShell | 셸 종료                               |
 
+<br>
 ---
-
-## ⚙️ SSD Simulator (`ssd`)
+## 5. ⚙️ SSD Simulator (`ssd`)
 
 ### 🔹 실행 형식
 `./ssd <command> <arguments...>`
@@ -58,7 +61,7 @@ mmap은 가상주소일부분과 물리메모리의 페이지를 매핑한다. �
 `nand.txt` 파일을 메모리 맵핑(`mmap`)하여 100개의 논리 블록(0~99)을 시뮬레이션합니다.  
 각 블록은 32비트(4바이트) 크기를 가지며, write 결과는 nand.txt, read 결과는 result.txt에 기록됩니다.
 
----
+<br>
 
 ### 1️⃣ **write**
 - **설명:** 지정한 논리 블록 주소(LBA)에 32비트 16진수 데이터를 기록합니다.  
@@ -72,7 +75,8 @@ mmap은 가상주소일부분과 물리메모리의 페이지를 매핑한다. �
   <img src="./SSD프로젝트/images/ssd 캡처.png" alt="write 이미지" width="500">
 </p>
 
----
+
+<br>
 
 ### 2️⃣ **read**
 - **설명:** 지정한 LBA의 데이터를 읽어 `result.txt`에 출력합니다.  
@@ -86,9 +90,10 @@ mmap은 가상주소일부분과 물리메모리의 페이지를 매핑한다. �
 <p align="center">
   <img src="./SSD프로젝트/images/ssd 캡처.png" alt="read 이미지" width="500">
 </p>
----
 
-## 💻 Test Shell (`testShell`)
+<br>
+---
+## 6. 💻 Test Shell (`testShell`)
 
 ### 🔹 실행 형식
 `./testShell`
@@ -98,7 +103,7 @@ mmap은 가상주소일부분과 물리메모리의 페이지를 매핑한다. �
 각 명령은 `fork()` + `exec()`를 통해 `ssd`를 실행하며, 결과는 `result.txt`로부터 읽어옵니다.  
 입력 명령을 통해 블록 단위 읽기/쓰기, 전체 테스트 수행이 가능합니다.
 
----
+<br>
 
 ### 1️⃣ **write**
 - **설명:** 지정한 LBA에 32비트 16진수 값을 기록합니다.  
@@ -108,7 +113,8 @@ mmap은 가상주소일부분과 물리메모리의 페이지를 매핑한다. �
 <p align="center">
   <img src="./SSD프로젝트/images/testShell_readWrite.png" alt="write 이미지" width="500">
 </p>
----
+
+<br>
 
 ### 2️⃣ **read**
 - **설명:** 지정한 LBA의 값을 읽어 콘솔에 출력합니다.  
@@ -118,7 +124,8 @@ mmap은 가상주소일부분과 물리메모리의 페이지를 매핑한다. �
 <p align="center">
   <img src="./SSD프로젝트/images/testShell_readWrite.png" alt="read 이미지" width="500">
 </p>
----
+
+<br>
 
 ### 3️⃣ **fullwrite**
 - **설명:** 전체 100개 LBA(0~99)에 랜덤 데이터를 씁니다.  
@@ -128,7 +135,8 @@ mmap은 가상주소일부분과 물리메모리의 페이지를 매핑한다. �
 <p align="center">
   <img src="./SSD프로젝트/images/testShell_fullwrite.png" alt="fullwrite 이미지" width="500">
 </p>
----
+
+<br>
 
 ### 4️⃣ **fullread**
 - **설명:** 전체 LBA의 데이터를 읽어 콘솔에 출력합니다.  
@@ -138,7 +146,8 @@ mmap은 가상주소일부분과 물리메모리의 페이지를 매핑한다. �
 <p align="center">
   <img src="./SSD프로젝트/images/testShell_fullread.png" alt="fullread 이미지" width="500">
 </p>
----
+
+<br>
 
 ### 5️⃣ **testapp1**
 - **설명:**  
@@ -148,7 +157,8 @@ mmap은 가상주소일부분과 물리메모리의 페이지를 매핑한다. �
 <p align="center">
   <img src="./SSD프로젝트/images/testShell_testapp1.png" alt="testapp1 이미지" width="500">
 </p>
----
+
+<br>
 
 ### 6️⃣ **testapp2**
 - **설명:**  
@@ -158,7 +168,8 @@ mmap은 가상주소일부분과 물리메모리의 페이지를 매핑한다. �
 <p align="center">
   <img src="./SSD프로젝트/images/testShell_testapp2.png" alt="testapp2 이미지" width="500">
 </p>
----
+
+<br>
 
 ### 7️⃣ **help**
 - **설명:** 사용 가능한 명령 목록을 표시합니다.  
@@ -167,7 +178,8 @@ mmap은 가상주소일부분과 물리메모리의 페이지를 매핑한다. �
 <p align="center">
   <img src="./SSD프로젝트/images/testShell_help.png" alt="help 이미지" width="500">
 </p>
----
+
+<br>
 
 ### 8️⃣ **exit**
 - **설명:** 셸 프로그램을 종료합니다.  
